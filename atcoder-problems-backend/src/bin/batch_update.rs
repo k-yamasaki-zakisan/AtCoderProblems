@@ -50,11 +50,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     conn.update_rated_point_sum(&all_accepted_submissions)
         .await?;
 
-    let current_count = conn.load_language_count().await?;
-    info!("Executing update_language_count...");
-    conn.update_language_count(&all_accepted_submissions, &current_count)
-        .await?;
-
     info!("Executing update_submissions_of_problems...");
     conn.update_submissions_of_problems().await?;
 
@@ -63,6 +58,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     info!("Executing update_streak_count...");
     conn.update_streak_count(&all_accepted_submissions).await?;
+
+    let current_count = conn.load_language_count().await?;
+    info!("Executing update_language_count...");
+    conn.update_language_count(&all_accepted_submissions, &current_count)
+        .await?;
 
     info!("Finished");
     Ok(())

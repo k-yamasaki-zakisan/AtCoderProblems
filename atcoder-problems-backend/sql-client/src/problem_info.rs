@@ -36,6 +36,7 @@ impl ProblemInfoUpdater for PgPool {
                     INNER JOIN contests ON contests.id = submissions.contest_id
                     WHERE contests.start_epoch_second >= $1
                     AND contests.rate_change != '-'
+                    AND contests.id NOT LIKE 'ahc%'
                     GROUP BY submissions.problem_id
                 ON CONFLICT (problem_id) DO UPDATE
                 SET point = EXCLUDED.point;

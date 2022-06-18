@@ -85,14 +85,24 @@ async fn test_update_problem_points() {
     let problem_id = "problem";
 
     let pool = utils::initialize_and_connect_to_test_sql().await;
-    pool.insert_contests(&[Contest {
-        id: contest_id.to_string(),
-        start_epoch_second: 1468670400,
-        rate_change: "All".to_string(),
+    pool.insert_contests(&[
+        Contest {
+            id: contest_id.to_string(),
+            start_epoch_second: 1468670400,
+            rate_change: "All".to_string(),
 
-        duration_second: 0,
-        title: "".to_string(),
-    }])
+            duration_second: 0,
+            title: "".to_string(),
+        },
+        Contest {
+            id: "ahc999".to_string(),
+            start_epoch_second: 1468670400,
+            rate_change: "All".to_string(),
+
+            duration_second: 0,
+            title: "AtCoder Heuristic Contest 999".to_string(),
+        },
+    ])
     .await
     .unwrap();
 
@@ -113,13 +123,22 @@ async fn test_update_problem_points() {
         vec![("problem".to_string(), Some(0.0))]
     );
 
-    pool.update_submissions(&[Submission {
-        id: 1,
-        point: 100.0,
-        problem_id: problem_id.to_string(),
-        contest_id: contest_id.to_string(),
-        ..Default::default()
-    }])
+    pool.update_submissions(&[
+        Submission {
+            id: 1,
+            point: 100.0,
+            problem_id: problem_id.to_string(),
+            contest_id: contest_id.to_string(),
+            ..Default::default()
+        },
+        Submission {
+            id: 2,
+            point: 200.0,
+            problem_id: "ahc999_a".to_string(),
+            contest_id: "ahc999".to_string(),
+            ..Default::default()
+        },
+    ])
     .await
     .unwrap();
     pool.update_problem_points().await.unwrap();
